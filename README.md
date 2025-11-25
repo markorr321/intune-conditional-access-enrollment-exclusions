@@ -231,21 +231,31 @@ Still under **Target resources**:
 
 1. In the **Include** tab, leave **All cloud apps** selected.
 2. Switch to the **Exclude** tab:
-   - Choose **Select apps**.
-   - Click **Select applications** (or **No apps selected**).
 
-   
+![Intune CAP Exclusion - Step 2](images/Intune%20CAP%20Exclusion%20-%20Step%202.png)
+
+   - Choose **Select apps**.
+
+   - Click **Select resources** and then **Select Specific Resources**.
+     
+![Intune CAP Exclusion - Step 3](images/Intune%20CAP%20Exclusion%20-%20Step%203.png)
 
 3. In the search box, add the following:
 
    - Search for `Microsoft Intune`  
      - Select the application where the **Application ID** is  
        `0000000a-0000-0000-c000-000000000000`
+       
+![Intune CAP Exclusion - Step 4](images/Intune%20CAP%20Exclusion%20-%20Step%204.png)
+
    - Search for `Microsoft Intune Enrollment`  
      - Select the application where the **Application ID** is  
        `d4ebce55-015a-49b5-a083-c84d1797ae8c`
+       
+![Intune CAP Exclusion - Step 5](images/Intune%20CAP%20Exclusion%20-%20Step%205.png)
 
 4. Click **Select** to add both apps to the exclusion list.
+
 5. Confirm that under **Exclude** you now see:
    - `Microsoft Intune`
    - `Microsoft Intune Enrollment`
@@ -258,6 +268,8 @@ Still under **Target resources**:
    - **Session** controls, if any.
 2. Ensure the policy is set to **On** (or **Report-only** if you are piloting first).
 3. Click **Save**.
+
+![Intune CAP Exclusion - Step 6](images/Intune%20CAP%20Exclusion%20-%20Step%206.png)
 
 ### Step 5: Validate the Exclusion
 
