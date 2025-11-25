@@ -148,6 +148,33 @@ Under this proposed model:
 
 As a result, an attacker cannot simply enroll a rogue device and rely on the excluded Intune apps to gain a trusted foothold. They must instead compromise an existing compliant device or privileged identity—risks that are already addressed through strong identity protections, Conditional Access, PIM, and monitoring.
 
+## Ensuring the Intune Enrollment Service Principal Exists
+
+In some tenants, the **Microsoft Intune Enrollment** enterprise application (service principal) does not exist by default or does not appear in the **Enterprise applications** list until it has been created or used at least once. Because Conditional Access targets and exclusions are configured against **service principals**, you must ensure that the Intune Enrollment service principal is present in the tenant before you can reliably include or exclude it in policies.
+
+This repository assumes the following app IDs:
+
+- **Microsoft Intune**  
+  `0000000a-0000-0000-c000-000000000000`
+- **Microsoft Intune Enrollment**  
+  `d4ebce55-015a-49b5-a083-c84d1797ae8c`
+
+If you cannot find **Microsoft Intune Enrollment** under *Enterprise applications*, use one of the following approaches to create or surface the service principal.
+
+### Check for Existing Service Principals
+
+1. In the Entra admin portal, go to:  
+   **Entra ID → Enterprise applications**.
+2. Search for:
+   - **Display name:** `Microsoft Intune Enrollment`
+   - Or **Application ID:** `d4ebce55-015a-49b5-a083-c84d1797ae8c`
+3. If it appears, confirm the **Application ID** matches the value above.  
+   You can now use this enterprise application in Conditional Access policies (for both targeting and exclusions).
+
+If it does **not** appear, proceed to creating the service principal.
+
+### Creating the Microsoft Intune Enrollment Service Principal (PowerShell)
+
 
 
 ## Disclaimer
