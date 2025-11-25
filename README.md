@@ -77,6 +77,15 @@ The design is built around:
 
 We propose excluding the **Microsoft Intune** and **Microsoft Intune Enrollment** applications from broad, catch-all MFA policies (for example, “All cloud apps – Require MFA”).
 
+> **Note:** Excluding **Microsoft Intune** (`0000000a-0000-0000-c000-000000000000`) and  
+> **Microsoft Intune Enrollment** (`d4ebce55-015a-49b5-a083-c84d1797ae8c`) from a broad  
+> “All cloud apps – Require MFA” policy does **not** remove MFA requirements for
+> administrators in the Intune / Entra admin portals. Admin MFA should be enforced
+> by separate, dedicated Conditional Access policies that target admin roles and
+> admin portals. This repository focuses only on refining the *tenant-wide* MFA
+> policy to avoid breaking device enrollment and PRT flows, not on weakening
+> existing admin protections.
+
 These two apps underpin:
 
 - Device join and registration pipelines  
