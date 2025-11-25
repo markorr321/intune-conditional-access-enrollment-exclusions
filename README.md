@@ -296,5 +296,11 @@ These exclusions, combined with:
 
 form the basis of the Conditional Access design described in this repository.
 
+## Additional Resources
+
+- [YouTube: Intune Conditional Access Enrollment Exclusions](https://www.youtube.com/watch?v=TvZyeBQnMKc)
+- [Article: Windows Device Enrollment Restrictions](https://medium.com/@markhunterorr/windows-device-enrollment-restrictions-c066e496cb5f?source=rss-f4c4977878b4------2)
+
+
 
 
