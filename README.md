@@ -21,6 +21,7 @@ The end-user impact is familiar:
 
 - “**Work or school account problem**” toasts
 
+![Work or School Account Problem](images/Work%20or%20School%20Account%20Problem.png)
 
 - “**Access work or school – Needs attention**” in Settings  
 - Devices stuck in non-compliant or partially enrolled states
