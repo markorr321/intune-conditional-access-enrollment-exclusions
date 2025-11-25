@@ -218,7 +218,7 @@ Within the policy:
 
 1. Under **Assignments**, open **Target resources**.
 
-[Intune CAP Exclusion - Step 1](images/Intune%20CAP%20Exclusion%20-%20Step%201.png)
+![Intune CAP Exclusion - Step 1](images/Intune%20CAP%20Exclusion%20-%20Step%201.png)
 
 2. Confirm that the policy is configured to:
    - **Include** → **All cloud apps**
