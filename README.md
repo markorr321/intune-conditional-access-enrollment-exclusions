@@ -19,7 +19,7 @@ While this looks good on paper, it can interfere with the background token and e
 
 The end-user impact is familiar:
 
-- “**Problem with your work or school account**” toasts  
+- “**Work or school account problem**” toasts  
 - “**Access work or school – Needs attention**” in Settings  
 - Devices stuck in non-compliant or partially enrolled states
 
