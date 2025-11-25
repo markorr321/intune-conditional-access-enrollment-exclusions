@@ -1,6 +1,6 @@
 # intune-conditional-access-enrollment-exclusions
 
-This repository documents practical guidance and examples for configuring Conditional Access in Entra ID to support reliable Microsoft Intune enrollment while maintaining strong security controls. It focuses on safely excluding the **Microsoft Intune** and **Microsoft Intune Enrollment** applications from broad MFA policies, handling hybrid-joined Windows devices, preserving Primary Refresh Token (PRT) health, and blocking personal device enrollments. You’ll find design rationale, example policies, and implementation notes that help balance user experience, device compliance, and protection against rogue or unmanaged endpoints.
+This repository documents practical guidance and examples for configuring Conditional Access in Entra ID to support reliable Microsoft Intune enrollment while maintaining strong security controls. It focuses on safely excluding the **Microsoft Intune** and **Microsoft Intune Enrollment** applications from broad MFA policies, handling hybrid-joined Windows devices, preserving Primary Refresh Token (PRT) health, and blocking personal device enrollments. The primary scenario targeted is **Hybrid AD Joined Autopilot** enrollments that surface as **“Work or School Account Problem just after Hybrid AD Joined Autopilot”**. You’ll find design rationale, example policies, and implementation notes that help balance user experience, device compliance, and protection against rogue or unmanaged endpoints.
 
 ## Background and Problem Summary
 
@@ -11,13 +11,13 @@ In many environments, broad “require MFA” Conditional Access (CA) policies a
 - **Microsoft Intune Enrollment**  
   `d4ebce55-015a-49b5-a083-c84d1797ae8c`
 
-While this looks good on paper, it can interfere with the background token and enrollment flows that Windows relies on—especially for **hybrid Entra ID joined** devices. CA prompts at the wrong time can block or break:
+While this looks good on paper, it can interfere with the background token and enrollment flows that Windows relies on—especially for **hybrid Entra ID joined** devices deployed via **Hybrid AD Joined Autopilot**. CA prompts at the wrong time can block or break:
 
 - Primary Refresh Token (**PRT**) issuance and refresh  
 - Intune enrollment and compliance reporting  
 - Device sync and policy application
 
-The end-user impact is familiar:
+The end-user impact is familiar, particularly in the **“Work or School Account Problem just after Hybrid AD Joined Autopilot”** scenario:
 
 - “**Work or school account problem**” toasts
 
@@ -26,7 +26,7 @@ The end-user impact is familiar:
 - “**Access work or school – Needs attention**” in Settings  
 - Devices stuck in non-compliant or partially enrolled states
 
-This repo documents a pattern that improves reliability for hybrid-joined Windows devices while **maintaining** a strong security posture.
+This repo documents a pattern that improves reliability for hybrid-joined Windows devices—specifically **Hybrid AD Joined Autopilot** enrollments—while **maintaining** a strong security posture.
 
 ---
 
@@ -87,7 +87,7 @@ These two apps underpin:
 Allowing them to operate without generic MFA prompts prevents CA from breaking background token flows and significantly reduces:
 
 - Enrollment failures  
-- “Problem with your work or school account” prompts  
+- “Problem with your work or school account” / **“Work or School Account Problem just after Hybrid AD Joined Autopilot”** prompts  
 - Devices stuck in a non-compliant or “needs attention” state
 
 ### 2. Enforcing MFA at Device Registration
@@ -190,6 +190,8 @@ At a high level, the script:
 - Checks for an existing service principal with the App ID `d4ebce55-015a-49b5-a083-c84d1797ae8c`.
 - Creates the service principal if it does not already exist.
 
+---
+
 ## Excluding the Intune Enrollment Service Principal from Conditional Access
 
 Once the **Microsoft Intune Enrollment** service principal exists in your tenant, you can explicitly exclude it (and the **Microsoft Intune** app) from broad MFA Conditional Access policies.
@@ -238,9 +240,8 @@ Still under **Target resources**:
 ![Intune CAP Exclusion - Step 2](images/Intune%20CAP%20Exclusion%20-%20Step%202.png)
 
    - Choose **Select apps**.
-
    - Click **Select resources** and then **Select Specific Resources**.
-     
+
 ![Intune CAP Exclusion - Step 3](images/Intune%20CAP%20Exclusion%20-%20Step%203.png)
 
 3. In the search box, add the following:
@@ -289,13 +290,11 @@ You should observe:
 
 - **No new MFA prompts** for background Intune / enrollment flows.
 - **Existing MFA behavior** remains enforced for business applications.
-- **PRT and device sync** behavior becomes more stable over time, especially on hybrid-joined Windows devices.
+- **PRT and device sync** behavior becomes more stable over time, especially on hybrid-joined Windows devices and **Hybrid AD Joined Autopilot** scenarios where *“Work or School Account Problem just after Hybrid AD Joined Autopilot”* previously appeared.
+
+---
 
 ## Additional Resources
 
 - [YouTube: Intune Conditional Access Enrollment Exclusions](https://www.youtube.com/watch?v=TvZyeBQnMKc)
 - [Article: Windows Device Enrollment Restrictions](https://medium.com/@markhunterorr/windows-device-enrollment-restrictions-c066e496cb5f?source=rss-f4c4977878b4------2)
-
-
-
-
