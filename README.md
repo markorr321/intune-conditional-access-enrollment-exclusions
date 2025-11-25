@@ -288,14 +288,6 @@ You should observe:
 - **Existing MFA behavior** remains enforced for business applications.
 - **PRT and device sync** behavior becomes more stable over time, especially on hybrid-joined Windows devices.
 
-These exclusions, combined with:
-
-- MFA enforced at **device registration**,
-- Blocking **personal Windows device enrollment**, and
-- Requiring **compliant devices** for Intune admin and Graph,
-
-form the basis of the Conditional Access design described in this repository.
-
 ## Additional Resources
 
 - [YouTube: Intune Conditional Access Enrollment Exclusions](https://www.youtube.com/watch?v=TvZyeBQnMKc)
