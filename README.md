@@ -216,7 +216,10 @@ This section assumes:
 
 Within the policy:
 
-1. Under **Assignments**, open **Cloud apps** (or **Target resources**, depending on portal terminology).
+1. Under **Assignments**, open **Target resources**.
+
+[Intune CAP Exclusion - Step 1](images/Intune%20CAP%20Exclusion%20-%20Step%201.png)
+
 2. Confirm that the policy is configured to:
    - **Include** → **All cloud apps**
 
@@ -224,12 +227,14 @@ This is the type of policy we are *refining* with exclusions, not disabling.
 
 ### Step 3: Add Exclusions for Intune and Intune Enrollment
 
-Still under **Cloud apps** / **Target resources**:
+Still under **Target resources**:
 
 1. In the **Include** tab, leave **All cloud apps** selected.
 2. Switch to the **Exclude** tab:
    - Choose **Select apps**.
    - Click **Select applications** (or **No apps selected**).
+
+   
 
 3. In the search box, add the following:
 
