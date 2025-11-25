@@ -148,6 +148,8 @@ Under this proposed model:
 
 As a result, an attacker cannot simply enroll a rogue device and rely on the excluded Intune apps to gain a trusted foothold. They must instead compromise an existing compliant device or privileged identity—risks that are already addressed through strong identity protections, Conditional Access, PIM, and monitoring.
 
+---
+
 ## Ensuring the Intune Enrollment Service Principal Exists
 
 In some tenants, the **Microsoft Intune Enrollment** enterprise application (service principal) does not exist by default or does not appear in the **Enterprise applications** list until it has been created or used at least once. Because Conditional Access targets and exclusions are configured against **service principals**, you must ensure that the Intune Enrollment service principal is present in the tenant before you can reliably include or exclude it in policies.
@@ -175,34 +177,107 @@ If it does **not** appear, proceed to creating the service principal.
 
 ### Creating the Microsoft Intune Enrollment Service Principal (PowerShell)
 
+This repository includes a helper script that will create the **Microsoft Intune Enrollment** service principal if it does not already exist in your tenant:
+
+- [`Create-IntuneServicePrincipal.ps1`](https://github.com/markorr321/intune-conditional-access-enrollment-exclusions/blob/main/Create-IntuneServicePrincipal.ps1)
+
+At a high level, the script:
+
+- Connects to Microsoft Graph with the appropriate permissions.
+- Checks for an existing service principal with the App ID `d4ebce55-015a-49b5-a083-c84d1797ae8c`.
+- Creates the service principal if it does not already exist.
+
+## Excluding the Intune Enrollment Service Principal from Conditional Access
+
+Once the **Microsoft Intune Enrollment** service principal exists in your tenant, you can explicitly exclude it (and the **Microsoft Intune** app) from broad MFA Conditional Access policies.
+
+This section assumes:
+
+- **Microsoft Intune**  
+  App ID: `0000000a-0000-0000-c000-000000000000`
+- **Microsoft Intune Enrollment**  
+  App ID: `d4ebce55-015a-49b5-a083-c84d1797ae8c`  
+  (created or verified using the steps/scripts above)
+
+### Step 1: Identify the Policy to Update
+
+1. In the Entra admin portal, navigate to:  
+   **Entra ID → Protection → Conditional Access → Policies**.
+2. Locate the broad MFA policy you want to adjust, for example:  
+   - `Baseline – Require MFA for all users`  
+   - `All cloud apps – Require MFA`  
+3. Open the policy for editing.
+
+> **Note:** The exact policy name will vary by environment. The important part is that it:
+> - Targets **All cloud apps** (or a large set of apps), and
+> - Applies a **Require multifactor authentication** control.
+
+### Step 2: Confirm the Policy Targets All Cloud Apps
+
+Within the policy:
+
+1. Under **Assignments**, open **Cloud apps** (or **Target resources**, depending on portal terminology).
+2. Confirm that the policy is configured to:
+   - **Include** → **All cloud apps**
+
+This is the type of policy we are *refining* with exclusions, not disabling.
+
+### Step 3: Add Exclusions for Intune and Intune Enrollment
+
+Still under **Cloud apps** / **Target resources**:
+
+1. In the **Include** tab, leave **All cloud apps** selected.
+2. Switch to the **Exclude** tab:
+   - Choose **Select apps**.
+   - Click **Select applications** (or **No apps selected**).
+
+3. In the search box, add the following:
+
+   - Search for `Microsoft Intune`  
+     - Select the application where the **Application ID** is  
+       `0000000a-0000-0000-c000-000000000000`
+   - Search for `Microsoft Intune Enrollment`  
+     - Select the application where the **Application ID** is  
+       `d4ebce55-015a-49b5-a083-c84d1797ae8c`
+
+4. Click **Select** to add both apps to the exclusion list.
+5. Confirm that under **Exclude** you now see:
+   - `Microsoft Intune`
+   - `Microsoft Intune Enrollment`
+
+### Step 4: Review and Enable the Policy
+
+1. Review the rest of the policy settings:
+   - **Users** / **Groups** in scope.
+   - **Grant** controls (for example, **Require multifactor authentication**).
+   - **Session** controls, if any.
+2. Ensure the policy is set to **On** (or **Report-only** if you are piloting first).
+3. Click **Save**.
+
+### Step 5: Validate the Exclusion
+
+After saving:
+
+1. Verify that the policy now shows:
+   - **Cloud apps** → **All cloud apps** (Include)  
+   - **Exclude** → `Microsoft Intune`, `Microsoft Intune Enrollment`
+2. Optionally, run sign-in tests on:
+   - A hybrid-joined Windows device going through normal PRT refresh / Intune sync.
+   - A user signing in to other apps that should still be challenged for MFA.
+
+You should observe:
+
+- **No new MFA prompts** for background Intune / enrollment flows.
+- **Existing MFA behavior** remains enforced for business applications.
+- **PRT and device sync** behavior becomes more stable over time, especially on hybrid-joined Windows devices.
+
+These exclusions, combined with:
+
+- MFA enforced at **device registration**,
+- Blocking **personal Windows device enrollment**, and
+- Requiring **compliant devices** for Intune admin and Graph,
+
+form the basis of the Conditional Access design described in this repository.
 
 
-## Disclaimer
 
-This repository represents **proposed** design patterns and configuration examples. You should:
-
-- Validate all changes in a **test** or **pilot** environment first.
-- Involve your **security**, **identity**, and **endpoint management** teams.
-- Adjust policies to match your organization’s **risk appetite**, **regulatory**, and **operational** requirements.
-
-Nothing here is official Microsoft guidance; treat this as community-driven implementation guidance.
-
----
-
-## Contributing
-
-Contributions, issues, and suggestions are welcome. If you have:
-
-- Alternative CA patterns  
-- Improvements to the example policies  
-- Real-world experiences or gotchas
-
-…feel free to open an issue or submit a pull request.
-
----
-
-## License
-
-Specify your chosen license here (for example, MIT):
-
-`TODO: Add LICENSE file and reference it here.`
