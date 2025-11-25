@@ -1,4 +1,4 @@
-# Conditional Access Enrollment Exclusions -- Hybrid AD Joined Autopilot
+# Entra Joined Autopilot CA Exclusions
 
 This repository documents practical guidance and examples for configuring Conditional Access in Entra ID to support reliable Microsoft Intune enrollment while maintaining strong security controls. It focuses on safely excluding the **Microsoft Intune** and **Microsoft Intune Enrollment** applications from broad MFA policies, handling hybrid-joined Windows devices, preserving Primary Refresh Token (PRT) health, and blocking personal device enrollments. The primary scenario targeted is **Hybrid AD Joined Autopilot** enrollments that surface as **“Work or School Account Problem just after Hybrid AD Joined Autopilot”**. You’ll find design rationale, example policies, and implementation notes that help balance user experience, device compliance, and protection against rogue or unmanaged endpoints.
 
