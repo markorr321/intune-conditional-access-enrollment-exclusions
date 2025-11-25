@@ -20,7 +20,7 @@ While this looks good on paper, it can interfere with the background token and e
 The end-user impact is familiar:
 
 - “**Work or school account problem**” toasts
-![Work or school account problem toast](https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00MTAyMjcwLTU2NzAwNWk5MDEwRDg1OTdBRjBGQjkw?revision=1)
+
 
 - “**Access work or school – Needs attention**” in Settings  
 - Devices stuck in non-compliant or partially enrolled states
